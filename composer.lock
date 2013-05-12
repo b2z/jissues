@@ -3,20 +3,64 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "d12c13ed6060b67f083d1e6906bf9a34",
+    "hash": "b7b3c9037c4f478c2046d75b0b45200a",
     "packages": [
+        {
+            "name": "elkuku/console-progressbar",
+            "version": "1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/elkuku/ConsoleProgressBar.git",
+                "reference": "1.0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/elkuku/ConsoleProgressBar/zipball/1.0",
+                "reference": "1.0",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Elkuku": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Stefan Walk",
+                    "email": "et@php.net"
+                },
+                {
+                    "name": "Nikolai Plath",
+                    "email": "der.elkuku@gmail.com",
+                    "homepage": "https://github.com/elkuku"
+                }
+            ],
+            "description": "This class provides you with an easy-to-use interface to progress bars.",
+            "keywords": [
+                "console"
+            ],
+            "time": "2013-04-22 19:52:37"
+        },
         {
             "name": "joomla/framework",
             "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/joomla/joomla-framework.git",
-                "reference": "c77e88c3b731f13b02f3d2c9122293f2d0009d4f"
+                "reference": "9939e4f31d093b6c3e7d72cb7ce5236b34737370"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/joomla/joomla-framework/zipball/c77e88c3b731f13b02f3d2c9122293f2d0009d4f",
-                "reference": "c77e88c3b731f13b02f3d2c9122293f2d0009d4f",
+                "url": "https://api.github.com/repos/joomla/joomla-framework/zipball/9939e4f31d093b6c3e7d72cb7ce5236b34737370",
+                "reference": "9939e4f31d093b6c3e7d72cb7ce5236b34737370",
                 "shasum": ""
             },
             "require": {
@@ -77,7 +121,7 @@
                 "framework",
                 "joomla"
             ],
-            "time": "2013-04-23 03:03:58"
+            "time": "2013-05-12 03:08:41"
         },
         {
             "name": "psr/log",
@@ -116,6 +160,56 @@
                 "psr-3"
             ],
             "time": "2012-12-21 11:40:51"
+        },
+        {
+            "name": "symfony/http-foundation",
+            "version": "2.2.x-dev",
+            "target-dir": "Symfony/Component/HttpFoundation",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/HttpFoundation.git",
+                "reference": "4c8eea472b4103cb00013a48c592ac6fc5043457"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/HttpFoundation/zipball/4c8eea472b4103cb00013a48c592ac6fc5043457",
+                "reference": "4c8eea472b4103cb00013a48c592ac6fc5043457",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.2-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Symfony\\Component\\HttpFoundation\\": ""
+                },
+                "classmap": [
+                    "Symfony/Component/HttpFoundation/Resources/stubs"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "http://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony HttpFoundation Component",
+            "homepage": "http://symfony.com",
+            "time": "2013-04-30 17:05:10"
         }
     ],
     "packages-dev": [
