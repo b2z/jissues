@@ -1,9 +1,9 @@
 <?php
 /**
- * @package     JTracker\View
+ * @package    JTracker\View
  *
- * @copyright   Copyright (C) 2012 - 2013 Open Source Matters, Inc. All rights reserved.
- * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ * @copyright  Copyright (C) 2012 - 2013 Open Source Matters, Inc. All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 namespace Joomla\Tracker\View;
@@ -11,13 +11,12 @@ namespace Joomla\Tracker\View;
 use Joomla\Language\Text;
 use Joomla\Model\ModelInterface;
 use Joomla\View\AbstractView;
-use Joomla\Tracker\View\Renderer\Mustache;
 use Joomla\Tracker\View\Renderer\Twig;
 
 /**
- * Tracker HTML View Class
+ * Tracker Html View class.
  *
- * @since  1.0
+ * @package Joomla\Tracker\View
  */
 abstract class AbstractTrackerHtmlView extends AbstractView
 {
@@ -32,40 +31,41 @@ abstract class AbstractTrackerHtmlView extends AbstractView
 	/**
 	 * The view template engine.
 	 *
-	 * @var    \Twiggy
+	 * @var    Twig
 	 * @since  1.0
 	 */
-	protected $tmplEngine = null;
+	protected $renderer = null;
 
 	/**
 	 * Method to instantiate the view.
 	 *
-	 * @param   ModelInterface  $model  The model object.
+	 * @param   ModelInterface  $model          The model object.
+	 * @param   string          $componentPath  The component layout path.
 	 *
 	 * @since   1.0
 	 */
-	public function __construct(ModelInterface $model)
+	public function __construct(ModelInterface $model, $componentPath = '')
 	{
 		parent::__construct($model);
 
-		// Load the template engine.
+		// Load the renderer.
 		$config = array(
-			'themes_base_dir'	=> JPATH_THEMES,
-			'default_theme'		=> '/twig'
+			'themes_base_dir' => JPATH_THEMES . '/twig'
 		);
-		$this->tmplEngine = new Twig($config);
-		$this->tmplEngine->addGlobal('text', new Text());
-		$this->tmplEngine->addFunction(new \Twig_SimpleFunction('translate', function ($string)
+		$this->renderer = new Twig($config);
+
+		// Register additional path.
+		if (!empty($componentPath))
+		{
+			$this->renderer->setTemplateLocations($componentPath, true);
+		}
+
+		// Register Text for translation.
+		$this->renderer->addFunction(new \Twig_SimpleFunction('translate', function ($string)
 		{
 			return Text::_($string);
 		}
 		));
-
-		/*$config = array(
-			'templates_base_dir'	=> JPATH_BASE . '/www/mustache',
-			'partials_base_dir'		=> JPATH_BASE . '/www/mustache/partials'
-		);
-		$this->tmplEngine = new Mustache($config);*/
 	}
 
 	/**
@@ -118,7 +118,7 @@ abstract class AbstractTrackerHtmlView extends AbstractView
 	 */
 	public function render()
 	{
-		return $this->tmplEngine->render($this->getLayout());
+		return $this->renderer->render($this->getLayout());
 	}
 
 	/**

@@ -69,10 +69,10 @@ class IssuesHtmlView extends AbstractTrackerHtmlView
 		//$this->buildToolbar();
 
 		// Set the vars to the template.
-		$this->tmplEngine->set('items', $this->model->getItems());
+		$this->renderer->set('items', $this->model->getItems());
 		//$this->tmplEngine->set('pagination', $this->model->getPagination());
-		$this->tmplEngine->set('state', $this->model->getState());
-		$this->tmplEngine->set('project', $this->model->getProject());
+		$this->renderer->set('state', $this->model->getState());
+		$this->renderer->set('project', $this->model->getProject());
 
 		return parent::render();
 	}

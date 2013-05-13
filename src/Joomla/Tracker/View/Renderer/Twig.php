@@ -9,11 +9,23 @@
 
 namespace Joomla\Tracker\View\Renderer;
 
+/**
+ * Twig class for rendering output.
+ *
+ * @package Joomla\Tracker\View\Renderer
+ *
+ * @since  1.0
+ */
 class Twig extends \Twig_Environment
 {
+	/**
+	 * The renderer default configuration parameters.
+	 *
+	 * @var    array
+	 * @since  1.0
+	 */
 	private $config = array(
 		'themes_base_dir'   => 'templates/',
-		'default_theme'     => 'default/',
 		'template_file_ext' => '.twig',
 		'twig_cache_dir'    => 'cache/twig/',
 		'delimiters'        => array(
@@ -23,24 +35,53 @@ class Twig extends \Twig_Environment
 		),
 		'environment'       => array()
 	);
+
+	/**
+	 * The data for the renderer.
+	 *
+	 * @var    array
+	 * @since  1.0
+	 */
 	private $data = array();
+
+	/**
+	 * The array of templates location paths.
+	 *
+	 * @var    array
+	 * @since  1.0
+	 */
 	private $templateLocations = array();
-	private $theme;
+
+	/**
+	 * Current template name.
+	 *
+	 * @var    string
+	 * @since  1.0
+	 */
 	private $template;
+
+	/**
+	 * Loads template from the filesystem.
+	 *
+	 * @var \Twig_Loader_Filesystem
+	 * @since  1.0
+	 */
 	private $twigLoader;
 
 	/**
-	 * Constructor
+	 * Instantiate the renderer.
 	 *
-	 * @param  array  $config  The array of configuration parameters
+	 * @param  array  $config  The array of configuration parameters.
+	 *
+	 * @since  1.0
 	 */
 	public function __construct($config = array())
 	{
 		// Merge the config.
 		$this->config = array_merge($this->config, $config);
 
-		// Set the template location.
-		$this->setTemplateLocations($this->config['default_theme']);
+		// Set the templates location path.
+		$this->setTemplateLocations();
 
 		try
 		{
@@ -55,9 +96,11 @@ class Twig extends \Twig_Environment
  	}
 
 	/**
-	 * Gets the Lexer instance.
+	 * Get the Lexer instance.
 	 *
-	 * @return  \Twig_LexerInterface  A Twig_LexerInterface instance
+	 * @return  \Twig_LexerInterface  A Twig_LexerInterface instance.
+	 *
+	 * @since   1.0
 	 */
  	public function getLexer()
 	{
@@ -70,15 +113,17 @@ class Twig extends \Twig_Environment
 	}
 
 	/**
-	 * Set the data.
+	 * Set the data for the renderer.
 	 *
 	 * @param   mixed    $key     The variable name or an array of variable names with values.
 	 * @param   mixed    $value   The value.
 	 * @param   boolean  $global  Is this a global variable?
 	 *
-	 * @return  object   Instance of this class
+	 * @return  object   Instance of this class.
+	 *
+	 * @since   1.0
 	 */
-	public function set($key, $value, $global = false)
+	public function set($key, $value = null, $global = false)
 	{
 		if (is_array($key))
 		{
@@ -102,9 +147,11 @@ class Twig extends \Twig_Environment
 	/**
 	 * Unset a particular variable.
 	 *
-	 * @param   mixed  $key  The variable name
+	 * @param   mixed  $key  The variable name.
 	 *
-	 * @return  object  Instance of this class
+	 * @return  object  Instance of this class.
+	 *
+	 * @since   1.0
 	 */
 	public function unset_data($key)
 	{
@@ -119,9 +166,11 @@ class Twig extends \Twig_Environment
 	/**
 	 * Set the template.
 	 *
-	 * @param   string  $name  The name of the template file
+	 * @param   string  $name  The name of the template file.
 	 *
-	 * @return  object  Instance of this class
+	 * @return  object  Instance of this class.
+	 *
+	 * @since  1.0
 	 */
 	public function setTemplate($name)
 	{
@@ -133,21 +182,23 @@ class Twig extends \Twig_Environment
 	/**
 	 * Render and return compiled HTML.
 	 *
-	 * @param   string  $template  The template file name
-	 * @param   array   $data      An array of data to pass to the template
+	 * @param   string  $template  The template file name.
+	 * @param   array   $data      An array of data to pass to the template.
 	 *
-	 * @return  string  compiled HTML
+	 * @return  string  Compiled HTML.
+	 *
+	 * @since   1.0
 	 */
 	public function render($template = '', array $data = array())
 	{
 		if (!empty($template))
 		{
-			$this->template = $template;
+			$this->setTemplate($template);
 		}
 
 		if (!empty($data))
 		{
-			$this->data = $data;
+			$this->set($data);
 		}
 
 		try
@@ -163,21 +214,23 @@ class Twig extends \Twig_Environment
 	/**
 	 * Display the compiled HTML content.
 	 *
-	 * @param   string  $template  The template file name
-	 * @param   array   $data      An array of data to pass to the template
+	 * @param   string  $template  The template file name.
+	 * @param   array   $data      An array of data to pass to the template.
 	 *
 	 * @return  void
+	 *
+	 * @since  1.0
 	 */
 	public function display($template = '', array $data = array())
 	{
 		if (!empty($template))
 		{
-			$this->template = $template;
+			$this->setTemplate($template);
 		}
 
 		if (!empty($data))
 		{
-			$this->data = $data;
+			$this->set($data);
 		}
 
 		try
@@ -191,19 +244,11 @@ class Twig extends \Twig_Environment
 	}
 
 	/**
-	 * Get the current theme name.
-	 *
-	 * @return  string  The name of the currently loaded theme
-	 */
-	public function getTheme()
-	{
-		return $this->theme;
-	}
-
-	/**
 	 * Get the current template name.
 	 *
-	 * @return  string  The name of the currently loaded template file (without the extension)
+	 * @return  string  The name of the currently loaded template file (without the extension).
+	 *
+	 * @since  1.0
 	 */
 	public function getTemplate()
 	{
@@ -211,30 +256,42 @@ class Twig extends \Twig_Environment
 	}
 
 	/**
-	 * Load the template and return an output object.
+	 * Set the templates location paths.
 	 *
-	 * @return  object  output
-	 */
-	private function load()
-	{
-		return $this->loadTemplate($this->template . $this->config['template_file_ext']);
-	}
-
-	/**
-	 * Set the template locations.
-	 *
-	 * @param   string  $theme  The name of theme to load
+	 * @param   string  $path             Templates location path.
+	 * @param   bool    $overrideBaseDir  If true path can be outside themes base directory.
 	 *
 	 * @return  void
+	 *
+	 * @since   1.0
 	 */
-	private function setTemplateLocations($theme)
+	public function setTemplateLocations($path = '', $overrideBaseDir = false)
 	{
-		$this->templateLocations[] = $this->config['themes_base_dir'] . $theme;
+		if (!$overrideBaseDir)
+		{
+			$this->templateLocations[] = $this->config['themes_base_dir'] . $path;
+		}
+		else
+		{
+			$this->templateLocations[] = $path;
+		}
 
 		// Reset the paths if needed.
 		if (is_object($this->twigLoader))
 		{
 			$this->twigLoader->setPaths($this->templateLocations);
 		}
+	}
+
+	/**
+	 * Load the template and return an output object.
+	 *
+	 * @return  object  Output object.
+	 *
+	 * @since  1.0
+	 */
+	private function load()
+	{
+		return $this->loadTemplate($this->getTemplate() . $this->config['template_file_ext']);
 	}
 }
