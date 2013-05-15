@@ -114,13 +114,14 @@ class Twig extends \Twig_Environment
 	/**
 	 * Set the data for the renderer.
 	 *
-	 * @param   mixed    $key     The variable name or an array of variable names with values.
-	 * @param   mixed    $value   The value.
-	 * @param   boolean  $global  Is this a global variable?
+	 * @param   mixed   $key     The variable name or an array of variable names with values.
+	 * @param   mixed   $value   The value.
+	 * @param   boolean $global  Is this a global variable?
 	 *
 	 * @return  Twig  Method supports chaining.
 	 *
 	 * @since   1.0
+	 * @throws \InvalidArgumentException
 	 */
 	public function set($key, $value = null, $global = false)
 	{
@@ -130,6 +131,11 @@ class Twig extends \Twig_Environment
 		}
 		else
 		{
+			if (!isset($value))
+			{
+				throw new \InvalidArgumentException('No value defined.');
+			}
+
 			if ($global)
 			{
 				$this->addGlobal($key, $value);
@@ -258,7 +264,7 @@ class Twig extends \Twig_Environment
 	 * Sets the paths where templates are stored.
 	 *
 	 * @param   string|array  $paths            A path or an array of paths where to look for templates.
-	 * @param   bool          $overrideBaseDir  If true path can be outside themes base directory.
+	 * @param   bool          $overrideBaseDir  If true a path can be outside themes base directory.
 	 *
 	 * @return  void
 	 *

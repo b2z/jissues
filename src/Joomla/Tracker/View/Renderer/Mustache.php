@@ -72,8 +72,9 @@ class Mustache extends \Mustache_Engine
 	 * @return  Mustache  Method supports chaining.
 	 *
 	 * @since   1.0
+	 * @throws  \InvalidArgumentException
 	 */
-	public function set($key, $value)
+	public function set($key, $value = null)
 	{
 		if (is_array($key))
 		{
@@ -81,6 +82,11 @@ class Mustache extends \Mustache_Engine
 		}
 		else
 		{
+			if (!isset($value))
+			{
+				throw new \InvalidArgumentException('No value defined.');
+			}
+
 			$this->data[$key] = $value;
 		}
 
