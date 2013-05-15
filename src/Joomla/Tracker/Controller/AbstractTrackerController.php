@@ -199,12 +199,9 @@ abstract class AbstractTrackerController extends AbstractController
 		// Get some data from the request
 		$vName   = $input->getWord('view', $this->defaultView);
 		$vFormat = $input->getWord('format', 'html');
-		$lName   = $input->getWord('layout', $this->defaultView.'.index');
+		$lName   = $input->getWord('layout', 'index');
 
 		$input->set('view', $vName);
-
-		// Register the layout paths for the view
-		$componentPath = JPATH_COMPONENT . '/View/' . ucfirst($vName) . '/tmpl';
 
 		$base   = '\\Joomla\\Tracker\\Components\\' . $this->component;
 		$vClass = $base . '\\View\\' . ucfirst($vName) . '\\' . ucfirst($vName) . ucfirst($vFormat) . 'View';
@@ -234,9 +231,14 @@ abstract class AbstractTrackerController extends AbstractController
 			}
 		}
 
+		// Register the templates paths for the view
+		$paths = array();
+		$paths[] = JPATH_COMPONENT . '/View/' . ucfirst($vName) . '/tmpl';
+		//$paths[] = JPATH_TEMPLATES . '/' . strtolower($this->component);
+
 		/* @var AbstractTrackerHtmlView $view */
-		$view = new $vClass(new $mClass, $componentPath);
-		$view->setLayout($lName);
+		$view = new $vClass(new $mClass, $paths);
+		$view->setLayout($vName . '.' . $lName);
 
 		// Render our view.
 		echo $view->render();

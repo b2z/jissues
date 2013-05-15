@@ -1,27 +1,55 @@
 <?php
 /**
- * @package     JTracker\View
- * @subpackage  Renderer
+ * @package    JTracker\View\Renderer
  *
- * @copyright   Copyright (C) 2013 Open Source Matters, Inc. All rights reserved.
- * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ * @copyright  Copyright (C) 2013 Open Source Matters, Inc. All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 namespace Joomla\Tracker\View\Renderer;
 
+/**
+ * Mustache class for rendering output.
+ *
+ * @package  JTracker\View\Renderer
+ *
+ * @since   1.0
+ */
 class Mustache extends \Mustache_Engine
 {
+	/**
+	 * The renderer default configuration parameters.
+	 *
+	 * @var    array
+	 * @since  1.0
+	 */
 	private $config = array(
-		'templates_base_dir'	=> '/templates',
-		'partials_base_dir'		=> '/partials'
+		'templates_base_dir' => '/templates',
+		'partials_base_dir'  => '/partials'
 	);
+
+	/**
+	 * The data for the renderer.
+	 *
+	 * @var    array
+	 * @since  1.0
+	 */
 	private $data;
+
+	/**
+	 * Current template name.
+	 *
+	 * @var    string
+	 * @since  1.0
+	 */
 	private $template;
 
 	/**
-	 * Constructor
+	 * Instantiate the renderer.
 	 *
-	 * @param  array  $config  The array of configuration parameters
+	 * @param  array  $config  The array of configuration parameters.
+	 *
+	 * @since  1.0
 	 */
 	public function __construct($config = array())
 	{
@@ -29,19 +57,21 @@ class Mustache extends \Mustache_Engine
 		$this->config = array_merge($this->config, $config);
 
 		parent::__construct(array(
-			'loader'			=> new \Mustache_Loader_FilesystemLoader($this->config['templates_base_dir']),
-			'partials_loader'	=> new \Mustache_Loader_FilesystemLoader($this->config['partials_base_dir']),
+				'loader'          => new \Mustache_Loader_FilesystemLoader($this->config['templates_base_dir']),
+				'partials_loader' => new \Mustache_Loader_FilesystemLoader($this->config['partials_base_dir']),
 			)
 		);
 	}
 
 	/**
-	 * Set the data.
+	 * Set the data for the renderer.
 	 *
-	 * @param   mixed    $key     The variable name or an array of variable names with values.
-	 * @param   mixed    $value   The value.
+	 * @param   mixed   $key    The variable name or an array of variable names with values.
+	 * @param   mixed   $value  The value.
 	 *
-	 * @return  object   Instance of this class
+	 * @return  Mustache  Method supports chaining.
+	 *
+	 * @since   1.0
 	 */
 	public function set($key, $value)
 	{
@@ -60,11 +90,13 @@ class Mustache extends \Mustache_Engine
 	/**
 	 * Unset a particular variable.
 	 *
-	 * @param   mixed  $key  The variable name
+	 * @param   mixed   $key  The variable name.
 	 *
-	 * @return  object  Instance of this class
+	 * @return  Mustache  Method supports chaining.
+	 *
+	 * @since   1.0
 	 */
-	public function unset_data($key)
+	public function unsetData($key)
 	{
 		if (array_key_exists($key, $this->data))
 		{
@@ -77,9 +109,11 @@ class Mustache extends \Mustache_Engine
 	/**
 	 * Set the template.
 	 *
-	 * @param   string  $name  The name of the template file
+	 * @param   string  $name  The name of the template file.
 	 *
-	 * @return  object  Instance of this class
+	 * @return  Mustache  Method supports chaining.
+	 *
+	 * @since   1.0
 	 */
 	public function setTemplate($name)
 	{
@@ -91,10 +125,12 @@ class Mustache extends \Mustache_Engine
 	/**
 	 * Render and return compiled HTML.
 	 *
-	 * @param   string  $template  The template file name
-	 * @param   mixed   $data      The data to pass to the template
+	 * @param   string  $template  The template file name.
+	 * @param   mixed   $data      The data to pass to the template.
 	 *
-	 * @return  string  compiled HTML
+	 * @return  string  Compiled HTML.
+	 *
+	 * @since   1.0
 	 */
 	public function render($template = '', $data = '')
 	{
@@ -114,7 +150,9 @@ class Mustache extends \Mustache_Engine
 	/**
 	 * Get the current template name.
 	 *
-	 * @return  string  The name of the currently loaded template file (without the extension)
+	 * @return  string  The name of the currently loaded template file (without the extension).
+	 *
+	 * @since   1.0
 	 */
 	public function getTemplate()
 	{
@@ -124,7 +162,9 @@ class Mustache extends \Mustache_Engine
 	/**
 	 * Load the template and return an output object.
 	 *
-	 * @return  object  output
+	 * @return  object  Output object.
+	 *
+	 * @since   1.0
 	 */
 	private function load()
 	{

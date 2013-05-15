@@ -8,15 +8,15 @@
 
 namespace Joomla\Tracker\View;
 
-use Joomla\Language\Text;
 use Joomla\Model\ModelInterface;
 use Joomla\View\AbstractView;
+use Joomla\Tracker\View\Renderer\TrackerExtension;
 use Joomla\Tracker\View\Renderer\Twig;
 
 /**
- * Tracker Html View class.
+ * JTracker Html View class.
  *
- * @package Joomla\Tracker\View
+ * @package  Joomla\Tracker\View
  */
 abstract class AbstractTrackerHtmlView extends AbstractView
 {
@@ -26,7 +26,7 @@ abstract class AbstractTrackerHtmlView extends AbstractView
 	 * @var    string
 	 * @since  1.0
 	 */
-	protected $layout = 'default.index';
+	protected $layout = 'index';
 
 	/**
 	 * The view template engine.
@@ -39,33 +39,29 @@ abstract class AbstractTrackerHtmlView extends AbstractView
 	/**
 	 * Method to instantiate the view.
 	 *
-	 * @param   ModelInterface  $model          The model object.
-	 * @param   string          $componentPath  The component layout path.
+	 * @param   ModelInterface  $model           The model object.
+	 * @param   string|array    $templatesPaths  The templates paths.
 	 *
 	 * @since   1.0
 	 */
-	public function __construct(ModelInterface $model, $componentPath = '')
+	public function __construct(ModelInterface $model, $templatesPaths = '')
 	{
 		parent::__construct($model);
 
 		// Load the renderer.
 		$config = array(
-			'themes_base_dir' => JPATH_THEMES . '/twig'
+			'templates_base_dir' => JPATH_TEMPLATES
 		);
 		$this->renderer = new Twig($config);
 
-		// Register additional path.
-		if (!empty($componentPath))
-		{
-			$this->renderer->setTemplateLocations($componentPath, true);
-		}
+		// Register tracker's Twig extension.
+		$this->renderer->addExtension(new TrackerExtension());
 
-		// Register Text for translation.
-		$this->renderer->addFunction(new \Twig_SimpleFunction('translate', function ($string)
+		// Register additional paths.
+		if (!empty($templatesPaths))
 		{
-			return Text::_($string);
+			$this->renderer->setTemplatesPaths($templatesPaths, true);
 		}
-		));
 	}
 
 	/**
@@ -118,7 +114,7 @@ abstract class AbstractTrackerHtmlView extends AbstractView
 	 */
 	public function render()
 	{
-		return $this->renderer->render($this->getLayout());
+		return $this->renderer->render($this->layout);
 	}
 
 	/**
